@@ -1,5 +1,5 @@
 import flask
-import RPi.GPIO
+import RPi.GPIO as GPIO
 from flask import request
 from flask import jsonify
 
