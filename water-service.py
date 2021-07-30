@@ -3,9 +3,11 @@ import RPi.GPIO as GPIO
 import time
 from flask import request
 from flask import jsonify
+from flask_cors import CORS
 
 
 app = flask.Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 
 
