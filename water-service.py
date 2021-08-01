@@ -37,4 +37,4 @@ def pump_on(pump_pin = 7):
     time.sleep(10)
     GPIO.output(pump_pin, GPIO.HIGH)
 
-app.run(host="0.0.0.0")
+app.run(host="0.0.0.0",ssl_context=('../merag_cert.pem','../merag_key.pem'))
