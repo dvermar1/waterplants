@@ -37,4 +37,5 @@ def pump_on(pump_pin = 7):
     time.sleep(10)
     GPIO.output(pump_pin, GPIO.HIGH)
 
-app.run()
+if __name__ == "__main__":
+    app.run()
