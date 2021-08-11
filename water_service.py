@@ -4,14 +4,13 @@ import time
 from flask import request
 from flask import jsonify
 from flask_cors import CORS
-from okta_jwt_verifier import JWTVerifier
+from okta_jwt_verifier import AccessTokenVerifier
 
 app = flask.Flask(__name__)
 CORS(app)
 app.config["DEBUG"] = True
 
-jwt_verifier = JWTVerifier(issuer="https://dev-94896909.okta.com/oauth2/default",
-                           client_id="0oa1ebw5njlc9Tgnz5d7",
+jwt_verifier = AccessTokenVerifier(issuer="https://dev-94896909.okta.com/oauth2/default",
                            audience='api://default')
 
 @app.route('/', methods=['GET'])
