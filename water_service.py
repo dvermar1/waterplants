@@ -4,7 +4,7 @@ import time
 from flask import request
 from flask import jsonify
 from flask_cors import CORS
-import okta_jwt_verifier
+from okta_jwt_verifier import JWTVerifier
 
 app = flask.Flask(__name__)
 CORS(app)
