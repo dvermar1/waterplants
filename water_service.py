@@ -1,6 +1,7 @@
 import flask
 import RPi.GPIO as GPIO
 import time
+import asyncio
 from flask import request
 from flask import jsonify
 from flask_cors import CORS
@@ -10,18 +11,19 @@ app = flask.Flask(__name__)
 CORS(app)
 app.config["DEBUG"] = True
 
-jwt_verifier = AccessTokenVerifier(issuer="https://dev-94896909.okta.com/oauth2/default",
-                           audience='api://default')
+jwt_verifier = AccessTokenVerifier(issuer="https://dev-94896909.okta.com/oauth2/default",audience='api://default')
 
 @app.route('/', methods=['GET'])
-def home():
-    if not is_authorized(request):
+async def home():
+    isAuthorized = await is_authorized(request)
+    if not isAuthorized:
         return "Unauthorized", 401
     return "<h1>Distant Reading Archive</h1><p>This site is a prototype API for distant reading of science fiction novels.</p>"
 
 @app.route('/water', methods=['POST'])
-def water_plants():
-    if not is_authorized(request):
+async def water_plants():
+    isAuthorized = await is_authorized(request)
+    if not isAuthorized:
         return "Unauthorized", 401
 
     var1 = request.args.get('key1')
@@ -29,7 +31,7 @@ def water_plants():
 
     print (var1 + "-----" + var2)
 
-    pump_on()
+    #pump_on()
 
     resp = jsonify(success=True)
     return resp
@@ -44,11 +46,13 @@ def pump_on(pump_pin = 7):
     time.sleep(10)
     GPIO.output(pump_pin, GPIO.HIGH)
 
-def is_authorized(request):
+async def is_authorized(request):
     """Get access token from authorization header."""
     try:
         token = request.headers.get("Authorization").split("Bearer ")[1]
-        return is_access_token_valid(token, config["issuer"], config["client_id"])
+        #print(token)
+        await jwt_verifier.verify(token)
+        return True
     except Exception:
         return False
 
